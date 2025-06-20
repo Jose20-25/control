@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iglesia Esperanza Viva</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 60px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; padding: 40px; text-align: center; }
+        h1 { color: #2c3e50; }
+        p { color: #555; }
+        .opciones { margin: 40px 0; display: flex; flex-direction: column; gap: 20px; }
+        .opciones a { display: block; background: #2980b9; color: #fff; text-decoration: none; padding: 18px; border-radius: 6px; font-size: 1.2em; transition: background 0.2s; }
+        .opciones a:hover { background: #1abc9c; }
+        .listas { margin-top: 40px; }
+        .listas a { display: inline-block; margin: 8px 12px; color: #2980b9; text-decoration: none; font-weight: bold; }
+        .listas a:hover { text-decoration: underline; }
+        .cumple-link { display: block; margin: 30px 0 0 0; color: #8e44ad; font-weight: bold; text-decoration: none; font-size: 1.1em; }
+        .cumple-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Iglesia Esperanza Viva</h1>
+        <p>Bienvenido al sistema de control de miembros.</p>
+        <div class="opciones">
+            <a href="/miembros/ninos/">Registro de Niños</a>
+            <a href="/miembros/jovenes/">Registro de Jóvenes</a>
+            <a href="/miembros/adultos/">Registro de Adultos</a>
+        </div>
+        <a class="cumple-link" href="/miembros/cumpleaneros/">🎂 Ver cumpleañeros del mes</a>
+        <div class="listas">
+            <h3>Ver miembros por iglesia:</h3>
+            <a href="/miembros/lista/Central/">Iglesia Central</a>
+            <a href="/miembros/lista/Tekera/">Filial La Tekera</a>
+            <a href="/miembros/lista/Pital/">Filial El Pital</a>
+            <a href="/miembros/lista/Sauce/">Filial El Sauce</a>
+        </div>
+    </div>
+</body>
+</html>

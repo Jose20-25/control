@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cumpleañeros del mes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f7f7f7; }
+        .container { max-width: 600px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; padding: 32px; }
+        h2 { color: #8e44ad; text-align: center; }
+        .card { background: #f0e6fa; border-radius: 6px; box-shadow: 0 1px 4px #ccc; padding: 18px; margin-bottom: 18px; display: flex; align-items: center; }
+        .card img { width: 60px; height: 60px; object-fit: cover; border-radius: 50%; margin-right: 18px; border: 2px solid #8e44ad; }
+        .card .info { flex: 1; }
+        .card .info strong { color: #6c3483; }
+        .volver { display: block; margin-top: 24px; text-align: center; color: #8e44ad; text-decoration: none; }
+        .volver:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Cumpleañeros del mes</h2>
+        {% if cumpleaneros %}
+            {% for miembro in cumpleaneros %}
+            <div class="card">
+                {% if miembro.foto %}
+                    <img src="{{ miembro.foto.url }}" alt="Foto de {{ miembro.nombre }}">
+                {% else %}
+                    <img src="https://ui-avatars.com/api/?name={{ miembro.nombre }}+{{ miembro.apellido }}&background=8e44ad&color=fff" alt="Sin foto">
+                {% endif %}
+                <div class="info">
+                    <strong>{{ miembro.nombre }} {{ miembro.apellido }}</strong><br>
+                    Fecha de nacimiento: {{ miembro.fecha_nacimiento|date:'d/m/Y' }}<br>
+                    Iglesia: {{ miembro.iglesia }}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p style="text-align:center; color:#888;">No hay cumpleañeros este mes.</p>
+        {% endif %}
+        <a class="volver" href="/miembros/">Volver al inicio</a>
+    </div>
+</body>
+</html>

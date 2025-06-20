@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar miembro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background: #f7f7f7; font-family: Arial, sans-serif; }
+        .form-container { max-width: 420px; margin: 50px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; padding: 32px; }
+        h2 { color: #8e44ad; text-align: center; }
+        form { display: flex; flex-direction: column; gap: 16px; }
+        label { font-weight: bold; color: #333; margin-bottom: 4px; }
+        input, select, textarea { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; }
+        button { background: #8e44ad; color: #fff; border: none; padding: 12px; border-radius: 4px; font-size: 1.1em; cursor: pointer; transition: background 0.2s; }
+        button:hover { background: #6c3483; }
+        .back-link { display: block; margin-top: 18px; text-align: center; color: #8e44ad; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        .errorlist { color: #c0392b; margin: 0 0 10px 0; list-style: none; padding: 0; }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Editar miembro: {{ miembro.nombre }} {{ miembro.apellido }}</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for field in form %}
+                <div>
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <ul class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit">Guardar cambios</button>
+        </form>
+        <a class="back-link" href="/miembros/lista/{{ miembro.iglesia }}/">Volver a la lista</a>
+    </div>
+</body>
+</html>

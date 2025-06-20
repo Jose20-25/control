@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Miembros de {{ iglesia }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background: #f7f7f7; font-family: Arial, sans-serif; }
+        .container { max-width: 1100px; margin: 40px auto; }
+        h2 { color: #2980b9; text-align: center; }
+        .cards { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; }
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ccc;
+            padding: 24px;
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .card img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border: 2px solid #2980b9;
+        }
+        .card strong { color: #2980b9; cursor: pointer; }
+        .card p { margin: 4px 0; color: #333; }
+        .eliminar-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #c0392b;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 10px;
+            font-size: 0.95em;
+            cursor: pointer;
+        }
+        .eliminar-btn:hover { background: #922b21; }
+    </style>
+    <script>
+        function editarMiembro(pk) {
+            window.open('/miembros/editar/' + pk + '/', '_blank');
+        }
+        function confirmarEliminar(event, nombre) {
+            if (!confirm('¿Estás seguro que deseas eliminar a ' + nombre + '?')) {
+                event.preventDefault();
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Miembros de {{ iglesia }}</h2>
+        <div class="cards">
+            {% for miembro in miembros %}
+            <div class="card">
+                <form method="get" action="/miembros/eliminar/{{ miembro.id }}/" style="position:absolute;top:10px;right:10px;">
+                    <button type="submit" class="eliminar-btn" title="Eliminar" onclick="confirmarEliminar(event, '{{ miembro.nombre }} {{ miembro.apellido }}')">✖</button>
+                </form>
+                {% if miembro.foto %}
+                    <img src="{{ miembro.foto.url }}" alt="Foto de {{ miembro.nombre }}">
+                {% else %}
+                    <img src="https://ui-avatars.com/api/?name={{ miembro.nombre }}+{{ miembro.apellido }}&background=2980b9&color=fff" alt="Sin foto">
+                {% endif %}
+                <strong ondblclick="editarMiembro({{ miembro.id }})" title="Doble clic para editar">{{ miembro.nombre }} {{ miembro.apellido }}</strong>
+                <p><b>Iglesia:</b> {{ miembro.get_iglesia_display }}</p>
+                {% if miembro.cargo %}<p><b>Cargo:</b> {{ miembro.cargo }}</p>{% endif %}
+                {% if miembro.otros_cargos %}<p><b>Otros cargos:</b> {{ miembro.otros_cargos }}</p>{% endif %}
+                <p><b>Sexo:</b> {{ miembro.get_sexo_display }}</p>
+                <p><b>Fecha de nacimiento:</b> {{ miembro.fecha_nacimiento }}</p>
+                {% if miembro.nombre_padre %}<p><b>Padre:</b> {{ miembro.nombre_padre }}</p>{% endif %}
+                {% if miembro.nombre_madre %}<p><b>Madre:</b> {{ miembro.nombre_madre }}</p>{% endif %}
+                {% if miembro.direccion %}<p><b>Dirección:</b> {{ miembro.direccion }}</p>{% endif %}
+                {% if miembro.telefono %}<p><b>Teléfono:</b> {{ miembro.telefono }}</p>{% endif %}
+                {% if miembro.email %}<p><b>Email:</b> {{ miembro.email }}</p>{% endif %}
+                {% if miembro.estado_civil %}<p><b>Estado civil:</b> {{ miembro.estado_civil }}</p>{% endif %}
+                {% if miembro.nombre_conyugue %}<p><b>Nombre del cónyuge:</b> {{ miembro.nombre_conyugue }}</p>{% endif %}
+                {% if miembro.cantidad_hijos %}<p><b>Cantidad de hijos:</b> {{ miembro.cantidad_hijos }}</p>{% endif %}
+                {% if miembro.nombres_hijos %}<p><b>Nombres de los hijos:</b> {{ miembro.nombres_hijos }}</p>{% endif %}
+            </div>
+            {% empty %}
+            <p>No hay miembros registrados en esta iglesia.</p>
+            {% endfor %}
+        </div>
+        <div style="text-align:center; margin-top:30px;">
+            <a href="/miembros/">Volver al inicio</a>
+        </div>
+    </div>
+</body>
+</html>

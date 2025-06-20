@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Niños</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background: #f7f7f7; font-family: Arial, sans-serif; }
+        .form-container { max-width: 420px; margin: 50px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; padding: 32px; }
+        h2 { color: #2980b9; text-align: center; }
+        form { display: flex; flex-direction: column; gap: 16px; }
+        label { font-weight: bold; color: #333; margin-bottom: 4px; }
+        input, select, textarea { padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; }
+        button { background: #2980b9; color: #fff; border: none; padding: 12px; border-radius: 4px; font-size: 1.1em; cursor: pointer; transition: background 0.2s; }
+        button:hover { background: #1abc9c; }
+        .back-link { display: block; margin-top: 18px; text-align: center; color: #2980b9; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        .errorlist { color: #c0392b; margin: 0 0 10px 0; list-style: none; padding: 0; }
+    </style>
+    <script>
+        function activarCamara() {
+            document.getElementById('id_foto_camara').click();
+        }
+        function activarArchivo() {
+            document.getElementById('id_foto_archivo').click();
+        }
+        function mostrarPreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview_foto').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function calcularEdadJS() {
+            var fechaInput = document.getElementById('id_fecha_nacimiento');
+            var edadInput = document.getElementById('id_edad');
+            if (fechaInput && edadInput && fechaInput.value) {
+                var hoy = new Date();
+                var fechaNac = new Date(fechaInput.value);
+                var edad = hoy.getFullYear() - fechaNac.getFullYear();
+                var m = hoy.getMonth() - fechaNac.getMonth();
+                if (m < 0 || (m === 0 && hoy.getDate() < fechaNac.getDate())) {
+                    edad--;
+                }
+                edadInput.value = edad >= 0 ? edad : '';
+            } else if (edadInput) {
+                edadInput.value = '';
+            }
+        }
+        window.addEventListener('DOMContentLoaded', function() {
+            var fechaInput = document.getElementById('id_fecha_nacimiento');
+            if (fechaInput) {
+                fechaInput.addEventListener('change', calcularEdadJS);
+                calcularEdadJS();
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Registro de Niños</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {% for field in form %}
+                {% if field.name != 'foto' and field.name != 'edad' %}
+                <div>
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <ul class="errorlist">{% for error in field.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                    {% endif %}
+                </div>
+                {% if field.name == 'fecha_nacimiento' %}
+                <div>
+                    {{ form.edad.label_tag }}
+                    {{ form.edad }}
+                </div>
+                {% endif %}
+                {% endif %}
+            {% endfor %}
+            <div>
+                <label>Foto</label>
+                <div style="display:flex; gap:10px;">
+                    <button type="button" onclick="activarArchivo()">Seleccionar archivo</button>
+                    <button type="button" onclick="activarCamara()">Cámara</button>
+                </div>
+                <input type="file" id="id_foto_archivo" name="foto" accept="image/*" style="display:none;" onchange="mostrarPreview(this)">
+                <input type="file" id="id_foto_camara" name="foto" accept="image/*" capture="environment" style="display:none;" onchange="mostrarPreview(this)">
+                <img id="preview_foto" src="#" alt="" style="display:none; margin-top:10px; width:100px; height:100px; object-fit:cover; border-radius:8px;">
+            </div>
+            <button type="submit">Guardar</button>
+        </form>
+        <a class="back-link" href="/miembros/">Volver al inicio</a>
+        <script>
+            // Mostrar preview solo si hay imagen
+            document.querySelectorAll('input[type=file][name=foto]').forEach(function(input) {
+                input.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        document.getElementById('preview_foto').style.display = 'block';
+                    }
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>

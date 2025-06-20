@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Eliminar miembro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background: #f7f7f7; font-family: Arial, sans-serif; }
+        .form-container { max-width: 420px; margin: 50px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #ccc; padding: 32px; text-align: center; }
+        h2 { color: #c0392b; }
+        p { color: #333; margin-bottom: 24px; }
+        button { background: #c0392b; color: #fff; border: none; padding: 12px 24px; border-radius: 4px; font-size: 1.1em; cursor: pointer; margin: 0 10px; }
+        button:hover { background: #922b21; }
+        .back-link { display: block; margin-top: 18px; color: #8e44ad; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Eliminar miembro</h2>
+        <p>¿Estás seguro que deseas eliminar a <strong>{{ miembro.nombre }} {{ miembro.apellido }}</strong>?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Sí, eliminar</button>
+            <a class="back-link" href="/miembros/lista/{{ miembro.iglesia }}/">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>
